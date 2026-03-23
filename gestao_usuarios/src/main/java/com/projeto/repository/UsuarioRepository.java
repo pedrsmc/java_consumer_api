@@ -52,10 +52,14 @@ public class UsuarioRepository {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_BASE + "/usuarios/" + id))
                 .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new Exception("Erro na API: " + response.statusCode() + " - " + response.body());
+        }
 
         return response.body();
     }

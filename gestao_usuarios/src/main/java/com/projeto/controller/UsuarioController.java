@@ -64,14 +64,14 @@ public class UsuarioController {
         Usuario usuario = usuarioServices.buscarUsuario(id);
 
         System.out.println(usuario);
-        System.out.println("\n------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------\n");
 
         while (true) {
             System.out.print("Você irá alterar o usuário em questão, deseja prosseguir? (S/N): ");
             String confirma = scanner.nextLine();
 
             if (confirma.equalsIgnoreCase("S")) {
-                System.out.print("Nome: ");
+                System.out.print("\nNome: ");
                 usuario.setNome(scanner.nextLine());
 
                 System.out.print("Email: ");
@@ -81,8 +81,8 @@ public class UsuarioController {
                 usuario.setTel(scanner.nextLine());
 
                 System.out.print("Idade: ");
-                usuario.setIdade(scanner.nextInt());
-                scanner.nextLine();
+                int idade = Integer.parseInt(scanner.nextLine());
+                usuario.setIdade(idade);
 
                 usuarioServices.alterarUsuario(id, usuario);
                 System.out.println("Usuário alterado com sucesso!");

@@ -70,27 +70,28 @@ public class UsuarioServices {
             throw new IllegalArgumentException("Usuário não pode ser nulo");
         }
 
-        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do usuário é obrigatório");
+        Usuario usuarioExistente = buscarUsuario(id);
+
+        if (usuario.getNome() != null && !usuario.getNome().trim().isEmpty()) {
+            usuarioExistente.setNome(usuario.getNome());
         }
 
-        if (usuario.getEmail() == null || !usuario.getEmail().contains("@")) {
-            throw new IllegalArgumentException("Email inválido");
+        if (usuario.getEmail() != null && usuario.getEmail().contains("@")) {
+            usuarioExistente.setEmail(usuario.getEmail());
         }
 
-        if (usuario.getTel() == null || usuario.getTel().trim().isEmpty()) {
-            throw new IllegalArgumentException("Telefone é obrigatório");
+        if (usuario.getTel() != null && !usuario.getTel().trim().isEmpty()) {
+            usuarioExistente.setTel(usuario.getTel());
         }
 
-        if (usuario.getIdade() <= 0 || usuario.getIdade() > 150) {
-            throw new IllegalArgumentException("Idade inválida (deve ser entre 1 e 150)");
+        if (usuario.getIdade() > 0 && usuario.getIdade() <= 150) {
+            usuarioExistente.setIdade(usuario.getIdade());
         }
 
-        String json = mapper.writeValueAsString(usuario);
+        String json = mapper.writeValueAsString(usuarioExistente);
         String resposta = usuarioRepository.alterarUsuario(id, json);
-        Usuario usuarioAlterado = mapper.readValue(resposta, Usuario.class);
 
-        return usuarioAlterado;
+        return mapper.readValue(resposta, Usuario.class);
     }
 
     public int removerUsuario(String id) throws Exception {
